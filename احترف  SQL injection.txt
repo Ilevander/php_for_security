@@ -1,0 +1,8 @@
+*SQL injection :
+ -user va utiliser une requete sql contre toi en partie de input texte.
+ -URL peut afficher des requette sql.
+ -Is OOP a factor of security ? => style de code , il pourra répondre au besoin de sécurité en cas de class
+ -Il faut désactiver le display errors en browser , car elle peuve être exploiter par un hacker=> enlever : ini_set('display_errors', 'off'); => en hosting
+ -Utilisation de UNION en sql pourra enjendrer le retour de deux requette sql celle de programmer owner et celle mallvaillante de hacker de la part de serveur , il faut la fermer contre cela.=> select nom,adress.. from table where x=12 UNION / UNION all select creditcard,1,1 from 
+ -Utiliser le programme Burp Suite pour voir le trafic data entre browser et server.
+ 

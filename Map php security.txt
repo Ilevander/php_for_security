@@ -1,0 +1,93 @@
+php for security :
+================== 
+-On doit sécuriser la session ainsi que les cookies aussi 
+-tool pour killer le hash ; hashkiller
+- Il faut sécuriser le hash des mot de passe.
+
+ !! Le langage de programation de sécurise rien ni session ni base de donnée même chose pour MySql
+
+========= 
+Concepts:
+=========
+*Know the system language :
+ => In the following example code, $name and display_name() are marked public. That declaration makes them accessible to code outside the Product class. $inventory and is_sold_out() are marked private. That declaration makes the available only inside the Product class, other code and objects do not have access to them and cannot read or modify them.
+
+<?php
+  class Product {
+    public $name;
+    private $inventory;
+  
+    public function display_name() {
+      $output = $this->name;
+      if(is_sold_out()) { $output .= " (sold out)"; }
+      return $output;
+    }
+  
+    private function is_sold_out() {
+      return $this->inventory == 0;
+    }
+  }
+?>
+==>good recources for security attacks... : 
+https://guides.codepath.com/websecurity
+
+*least priviledge. => Donner les moindre des persmissions aux users. (PoLP)
+ ==> exemple
+   function access($needed_rank)
+        {
+
+            $user_rank= isset($_SESSION['user_rank']) ? $_SESSION['user_rank'] : "";
+
+           switch ($needed_rank) {
+            case 'admin':
+                $allowed[]= "admin";//Si je suis admin je dois moi uniquement avoir accès , je doit tout seul figurer sur le user_rank
+                 return in_array($user_rank,$allowed);
+                break;
+                case 'editor': // Si je suis editeur , moi e l'admin on aurra accès et pas le user
+                $allowed[]="admin";    
+                $allowed[]= "editor";
+                 return in_array($user_rank,$allowed) ;
+                    break;
+                    case 'user':
+                     $allowed[]="admin";   
+                     $allowed[]="editor";   
+                     $allowed[]= "user";//si je suis un simple utiisateur , tout les autre aurons accès , l'editeur , et l'admin , et moi aussi.
+                     return in_array($user_rank,$allowed) ;
+                        break;
+            default:
+                # code...
+                break;
+           }
+           return false;
+        } 
+
+*Defense in depth : use web firewall application
+=> le faite de mettre plusieurs mure de protection pour protéger un serveur ou une application , en ca ou un mure se casse par une attack on aurra d'autres plusieurs mus de sécurité
+=> je vais par exemple ajouter une confirmation par code de vérification par téléphone (double authentification) , même code par adresse mail.
+
+*Prevention & detection. => " " | \ '' .... il pourra faire <html> <p>.....
+*Blacklisting vs white listing. => if(!in_array()) { invalid html tag;}
+
+Concepts security:
+=================
+*Never trust users
+*Least privilege
+*Simple is more secure
+*Expect the unexpected
+*Defense in depth
+*Security through obscurity
+*Prefer whitelisting over blacklisting
+*Map data movement and exposure
+
+Laravel security:
+=================
+*Path Traversal : route() , files/
+*LFI , RFI : include('....'.{destination}) , index.php/page/.././../../../
+*XSS : FIEO=>(filters...like in session,url,)=> filter anything from user ,escape output{{ }} , headers , CSP
+*Session Hijacking & Fixation : session_generate_id(); sessionId = 123 , $_SESSION => doit être cripté
+*Cookie : done by laravel
+*SQL injection : using prepared queries, done by laravel, using emulators to secure queries.
+*CSRF : 
+*Input validation : filtring inputs user , done by laravel.
+*RCE : 
+*Email header injection : 
